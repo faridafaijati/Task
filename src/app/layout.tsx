@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
-const inter = Inter({ subsets: ["latin"] });
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TaskVibe | Daily Task Management",
-  description: "A premium task management app with analytics and focus tools.",
+  title: "TaskVibe | Premium Productivity",
+  description: "A premium, modern task management app for high-achievers.",
 };
 
 export default function RootLayout({
@@ -17,12 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={plusJakartaSans.className}>
         <div style={{ display: 'flex' }}>
           <Sidebar />
           <main style={{ 
             flex: 1, 
-            marginLeft: '300px', 
+            marginLeft: '320px', 
             padding: '40px',
             minHeight: '100vh'
           }}>
