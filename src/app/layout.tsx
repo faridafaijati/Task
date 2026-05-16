@@ -7,10 +7,7 @@ import { Providers } from "@/components/Providers";
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: {
-    default: 'TaskVibe | Premium Productivity & Task Management',
-    template: '%s | TaskVibe'
-  },
+  title: 'TaskVibe | Premium Productivity & Task Management',
   description: 'Elevate your productivity with TaskVibe. A premium task management app with sunrise energy aesthetics, focus timers, and deep activity insights.',
   keywords: ['task management', 'productivity app', 'focus timer', 'task analytics', 'organized life'],
   authors: [{ name: 'TaskVibe Team' }],
