@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: 'TaskVibe',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://task-sigma-beryl.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: 'TaskVibe Dashboard Preview',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'TaskVibe | Premium Productivity',
     description: 'Elevate your daily routine with sunrise energy aesthetics.',
-    images: ['/og-image.png'],
+    images: ['https://task-sigma-beryl.vercel.app/og-image.png'],
   },
   robots: {
     index: true,
