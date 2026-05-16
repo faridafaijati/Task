@@ -87,6 +87,19 @@ function LoginFormContent() {
           </button>
         </form>
 
+        <div className={styles.separator}>
+          <span>OR</span>
+        </div>
+
+        <button 
+          onClick={() => signIn('google', { callbackUrl: '/' })} 
+          className={styles.googleBtn}
+          disabled={loading}
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+          <span>Continue with Google</span>
+        </button>
+
         <div className={styles.authFooter}>
           <p>Don't have an account? <Link href="/auth/signup">Sign Up</Link></p>
         </div>

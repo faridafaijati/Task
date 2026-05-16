@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import { signup } from '@/app/actions/auth';
+import { signIn } from 'next-auth/react';
 import styles from '../login/auth.module.css';
 
 export default function SignupPage() {
@@ -86,6 +87,19 @@ export default function SignupPage() {
             {loading ? <Loader2 className={styles.spin} size={20} /> : <>Sign Up <ArrowRight size={18} /></>}
           </button>
         </form>
+
+        <div className={styles.separator}>
+          <span>OR</span>
+        </div>
+
+        <button 
+          onClick={() => signIn('google', { callbackUrl: '/' })} 
+          className={styles.googleBtn}
+          disabled={loading}
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+          <span>Sign up with Google</span>
+        </button>
 
         <div className={styles.authFooter}>
           <p>Already have an account? <Link href="/auth/login">Login</Link></p>
