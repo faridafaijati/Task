@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongodb';
 import { Task } from '@/models';
+import { auth } from '@/auth';
 
 export async function GET() {
   try {
+    const session = await auth();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const userId = (session.user as any).id;
+
     await connectDB();
     
     // Aggregate tasks by day for the last 7 days
@@ -11,7 +16,7 @@ export async function GET() {
     last7Days.setDate(last7Days.getDate() - 7);
 
     const activityData = await Task.aggregate([
-      { $match: { createdAt: { $gte: last7Days } } },
+      { $match: { userId, createdAt: { $gte: last7Days } } },
       {
         $group: {
           _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
@@ -24,6 +29,7 @@ export async function GET() {
 
     // Aggregate by category
     const categoryData = await Task.aggregate([
+      { $match: { userId } },
       {
         $group: {
           _id: "$category",

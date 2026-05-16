@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
@@ -6,44 +7,45 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
+// Mongoose Cache
 let cached = (global as any).mongoose;
-
 if (!cached) {
   cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
-async function connectDB() {
-  if (cached.conn) {
-    return cached.conn;
-  }
-
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      connectTimeoutMS: 10000, // 10 seconds
-      serverSelectionTimeoutMS: 10000, // 10 seconds
+      connectTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 10000,
     };
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
   }
-
   try {
     cached.conn = await cached.promise;
-    console.log('MongoDB connected successfully');
+    console.log('Mongoose connected');
   } catch (e) {
     cached.promise = null;
-    console.error('MongoDB connection error:', e);
     throw e;
   }
-
   return cached.conn;
 }
 
-export default connectDB;
+// MongoClient (Required for Auth.js Adapter)
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === 'development') {
+  if (!(global as any)._mongoClientPromise) {
+    client = new MongoClient(MONGODB_URI);
+    (global as any)._mongoClientPromise = client.connect();
+  }
+  clientPromise = (global as any)._mongoClientPromise;
+} else {
+  client = new MongoClient(MONGODB_URI);
+  clientPromise = client.connect();
+}
+
+export default clientPromise;

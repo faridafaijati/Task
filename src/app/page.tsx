@@ -13,9 +13,11 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 
 export default function Home() {
+  const { data: session } = useSession();
   const [stats, setStats] = useState({
     pending: 0,
     completed: 0,
@@ -50,12 +52,14 @@ export default function Home() {
     day: 'numeric' 
   });
 
+  const firstName = session?.user?.name?.split(' ')[0] || 'Viber';
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.welcome}>
           <span className={styles.date}>{today}</span>
-          <h1>Welcome back, <span className={styles.highlight}>Viber</span></h1>
+          <h1>Welcome back, <span className={styles.highlight}>{firstName}</span></h1>
         </div>
         <div className={styles.actions}>
           <Link href="/tasks" className={`${styles.btnPrimary} shimmer`}>

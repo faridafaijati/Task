@@ -1,7 +1,8 @@
-'use strict';
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 import { 
   LayoutDashboard, 
   CheckSquare, 
@@ -9,11 +10,14 @@ import {
   BarChart3, 
   StickyNote, 
   Calendar,
-  Settings
+  LogOut,
+  User
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
+  const { data: session } = useSession();
+
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', href: '/' },
     { icon: <CheckSquare size={20} />, label: 'Tasks', href: '/tasks' },
@@ -40,10 +44,22 @@ const Sidebar = () => {
       </nav>
 
       <div className={styles.footer}>
-        <Link href="/settings" className={styles.navItem}>
-          <span className={styles.icon}><Settings size={20} /></span>
-          <span className={styles.label}>Settings</span>
-        </Link>
+        {session?.user && (
+          <div className={styles.userProfile}>
+            <div className={styles.avatar}>
+              <User size={18} />
+            </div>
+            <div className={styles.userInfo}>
+              <span className={styles.userName}>{session.user.name}</span>
+              <span className={styles.userEmail}>{session.user.email}</span>
+            </div>
+          </div>
+        )}
+        
+        <button onClick={() => signOut()} className={styles.logoutBtn}>
+          <LogOut size={20} />
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
   );

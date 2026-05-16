@@ -15,18 +15,20 @@ const CategorySchema = new Schema<ICategory>({
 export const Category = models.Category || model<ICategory>('Category', CategorySchema);
 
 export interface ITask {
+  userId: string;
   title: string;
   description?: string;
   category: string;
   priority: 'low' | 'medium' | 'high';
   status: 'pending' | 'completed';
   dueDate?: Date;
-  timeSpent?: number; // in seconds
+  timeSpent?: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const TaskSchema = new Schema<ITask>({
+  userId: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String },
   category: { type: String, default: 'General' },
@@ -39,6 +41,7 @@ const TaskSchema = new Schema<ITask>({
 export const Task = models.Task || model<ITask>('Task', TaskSchema);
 
 export interface INote {
+  userId: string;
   title: string;
   content: string;
   createdAt: Date;
@@ -46,8 +49,11 @@ export interface INote {
 }
 
 const NoteSchema = new Schema<INote>({
+  userId: { type: String, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
 }, { timestamps: true });
 
 export const Note = models.Note || model<INote>('Note', NoteSchema);
+
+export { User } from './User';
