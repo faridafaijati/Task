@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import connectDB from './src/lib/mongodb';
+import { connectDB } from './src/lib/mongodb';
 import { Task, Note } from './src/models';
 
 const seedData = async () => {
